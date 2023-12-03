@@ -1,28 +1,14 @@
-import { useEffect, useState } from "react";
-
+import { fetchEvents } from "../util/HTTP";
 import EventsList from "../components/EventsList";
+import useFetch from "../hooks/useFetch";
 
 function EventsPage() {
-	const [isLoading, setIsLoading] = useState(false);
-	const [fetchedEvents, setFetchedEvents] = useState();
-	const [error, setError] = useState();
+	const {
+		isLoading,
+		fetchedData: fetchedEvents,
+		error,
+	} = useFetch(fetchEvents, []);
 
-	useEffect(() => {
-		async function fetchEvents() {
-			setIsLoading(true);
-			const response = await fetch("http://localhost:8080/events");
-
-			if (!response.ok) {
-				setError("Fetching events failed.");
-			} else {
-				const resData = await response.json();
-				setFetchedEvents(resData.events);
-			}
-			setIsLoading(false);
-		}
-
-		fetchEvents();
-	}, []);
 	return (
 		<>
 			<div style={{ textAlign: "center" }}>
