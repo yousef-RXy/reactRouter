@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { fetchEvents } from "./util/HTTP";
+import { fetchEvents, fetchEvent } from "./util/HTTP";
 
 import RootLayout from "./pages/Root";
 import EventsRootLayout from "./pages/EventsRoot";
@@ -27,7 +27,11 @@ const router = createBrowserRouter([
 						loader: fetchEvents,
 					},
 					{ path: "new", element: <NewEventPage /> },
-					{ path: ":eventId", element: <EventDetailPage /> },
+					{
+						path: ":eventId",
+						element: <EventDetailPage />,
+						loader: fetchEvent,
+					},
 					{ path: ":eventId/edit", element: <EditEventPage /> },
 				],
 			},
