@@ -8,8 +8,15 @@ function EventForm({ method, event }) {
 		navigate("..");
 	}
 
+	function submitHandler(e) {
+		e.preventDefault();
+	}
+
 	return (
-		<form className={classes.form}>
+		<form
+			onSubmit={submitHandler}
+			className={classes.form}
+		>
 			<p>
 				<label htmlFor="title">Title</label>
 				<input
@@ -17,6 +24,7 @@ function EventForm({ method, event }) {
 					type="text"
 					name="title"
 					required
+					defaultValue={event ? event.title : ""}
 				/>
 			</p>
 			<p>
@@ -26,6 +34,7 @@ function EventForm({ method, event }) {
 					type="url"
 					name="image"
 					required
+					defaultValue={event ? event.image : ""}
 				/>
 			</p>
 			<p>
@@ -35,6 +44,7 @@ function EventForm({ method, event }) {
 					type="date"
 					name="date"
 					required
+					defaultValue={event ? event.date : ""}
 				/>
 			</p>
 			<p>
@@ -44,6 +54,7 @@ function EventForm({ method, event }) {
 					name="description"
 					rows="5"
 					required
+					defaultValue={event ? event.description : ""}
 				/>
 			</p>
 			<div className={classes.actions}>
