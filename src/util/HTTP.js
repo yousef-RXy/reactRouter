@@ -24,22 +24,39 @@ export async function fetchEvent({ request, params }) {
 		return response;
 	}
 }
-
 export async function sendEvent({ request, params }) {
+	const method = request.method;
+
 	const fd = await request.formData();
-	const event = Object.fromEntries(fd.entries());
-	const response = await fetch("http://localhost:8080/events", {
-		method: "POST",
+	const data = Object.fromEntries(fd.entries());
+	let id;
+
+	let url = "http://localhost:8080/events";
+
+	if (method === "PATCH") {
+		id = params.eventId;
+		url = "http://localhost:8080/events/" + id;
+	} else {
+		id = `e${Math.random() * 10}`;
+	}
+	const event = { id, ...data };
+
+	const response = await fetch(url, {
+		method: method,
 		headers: {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(event),
 	});
 
+	if (response.status === 422) {
+		return response;
+	}
+
 	if (!response.ok) {
 		throw json({ message: "Could not save event." }, { status: 500 });
 	} else {
-		return redirect(`/events`);
+		return redirect(`/events/${id}`);
 	}
 }
 
