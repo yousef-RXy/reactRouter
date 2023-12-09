@@ -1,5 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { fetchEvents, fetchEvent, sendEvent, deleteEvent } from "./util/HTTP";
+import {
+	fetchEvents,
+	fetchEvent,
+	sendEvent,
+	deleteEvent,
+	sendnewsletter,
+} from "./util/HTTP";
 
 import RootLayout from "./pages/Root";
 import EventsRootLayout from "./pages/EventsRoot";
@@ -9,6 +15,7 @@ import EventsPage from "./pages/Events";
 import EventDetailPage from "./pages/EventDetail";
 import NewEventPage from "./pages/NewEvent";
 import ErrorPage from "./pages/Error";
+import NewsletterPage from "./pages/Newsletter";
 
 const router = createBrowserRouter([
 	{
@@ -41,6 +48,11 @@ const router = createBrowserRouter([
 						],
 					},
 				],
+			},
+			{
+				path: "newsletter",
+				element: <NewsletterPage />,
+				action: sendnewsletter,
 			},
 		],
 	},

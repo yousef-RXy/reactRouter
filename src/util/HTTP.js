@@ -1,13 +1,25 @@
-import { json, redirect } from "react-router-dom";
+import { json, redirect, defer } from "react-router-dom";
 
-export async function fetchEvents() {
+async function loadEvents() {
 	const response = await fetch("http://localhost:8080/events");
 
 	if (!response.ok) {
-		return json({ message: "Could not fetch events." }, { status: 500 });
+		throw json(
+			{ message: "Could not fetch events." },
+			{
+				status: 500,
+			}
+		);
 	} else {
-		return response;
+		const resData = await response.json();
+		return resData.events;
 	}
+}
+
+export function fetchEvents() {
+	return defer({
+		events: loadEvents(),
+	});
 }
 
 export async function fetchEvent({ request, params }) {
@@ -75,4 +87,13 @@ export async function deleteEvent({ request, params }) {
 		);
 	}
 	return redirect("/events");
+}
+
+export async function sendnewsletter({ request }) {
+	const data = await request.formData();
+	const email = data.get("email");
+
+	// send to backend newsletter server ...
+	console.log(email);
+	return { message: "Signup successful!" };
 }
